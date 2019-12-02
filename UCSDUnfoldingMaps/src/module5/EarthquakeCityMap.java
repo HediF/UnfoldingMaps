@@ -146,6 +146,15 @@ public class EarthquakeCityMap extends PApplet {
 	private void selectMarkerIfHover(List<Marker> markers)
 	{
 		// TODO: Implement this method
+		if (lastSelected == null) {
+		for (Marker marker : markers) {
+			if (!marker.isSelected() && marker.isInside(map, mouseX, mouseY)) {
+				lastSelected = (CommonMarker) marker;
+				marker.setSelected(true);
+				break;
+			}
+		}
+		}
 	}
 	
 	/** The event handler for mouse clicks
@@ -154,11 +163,25 @@ public class EarthquakeCityMap extends PApplet {
 	 * where the city is in the threat circle
 	 */
 	@Override
-	public void mouseClicked()
-	{
-		// TODO: Implement this method
+	public void mouseClicked() {
+		// DONE: Implement this method
 		// Hint: You probably want a helper method or two to keep this code
-		// from getting too long/disorganized
+		// from getting too long/disorganized.
+
+		if (lastClicked != null) {
+			if (lastSelected != null) {
+				lastSelected.setSelected(false);
+				lastSelected = null;
+			}
+			unhideMarkers();
+			lastClicked = null;
+		} else {
+			selectMarkerIfHover(cityMarkers);
+			selectMarkerIfHover(quakeMarkers);
+			if (lastSelected != null) {
+				lastClicked = lastSelected;
+			}
+		}
 	}
 	
 	
